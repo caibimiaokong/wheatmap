@@ -124,7 +124,7 @@ class _MapBottomSheetState extends State<MapBottomSheet> {
               decoration: BoxDecoration(
                 image: DecorationImage(
                   image: AssetImage(
-                    'lib/asset/map_type_${mapType.toString().split('.').last}.png',
+                    'lib/asset/photo/map_type_${mapType.toString().split('.').last}.png',
                   ),
                   fit: BoxFit.cover,
                 ),

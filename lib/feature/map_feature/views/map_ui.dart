@@ -13,12 +13,15 @@ class MapScreen extends StatefulWidget {
   State<MapScreen> createState() => _MapScreenState();
 }
 
-class _MapScreenState extends State<MapScreen> {
-  // final Completer<GoogleMapController> _controller =
-  //     Completer<GoogleMapController>();
+class _MapScreenState extends State<MapScreen>
+    with AutomaticKeepAliveClientMixin {
+  @override
+  bool get wantKeepAlive => true;
+
   final SupabaseClient client = Supabase.instance.client;
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return RepositoryProvider(
       create: (context) => MapRepository(supabaseClient: client),
       child: BlocProvider(

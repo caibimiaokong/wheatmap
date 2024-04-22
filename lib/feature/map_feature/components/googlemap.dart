@@ -1,9 +1,11 @@
 import 'dart:async';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:map_launcher/map_launcher.dart' hide MapType;
 import 'package:wheatmap/feature/map_feature/components/googlemapicon.dart';
 import 'package:wheatmap/feature/map_feature/components/mapbottomsheet.dart';
 import 'package:wheatmap/feature/map_feature/components/mapcontroller.dart';
+import 'package:wheatmap/feature/map_feature/components/markbottomsheet.dart';
 import 'package:wheatmap/feature/map_feature/controllers/bloc/map_bloc.dart';
 import 'package:wheatmap/feature/map_feature/models/displaypoint.dart';
 import 'package:flutter/material.dart';
@@ -41,6 +43,8 @@ class GoogleMapScreenState extends State<GoogleMapScreen> {
   Set<Marker> wheatMarker = {};
   Set<Marker> rescueMarker = {};
   Set<Marker> harvesterMarker = {};
+
+  final _levels = const [1.0, 4.25, 6.75, 8.25, 11.5, 14.5, 16.0, 16.5];
 
   void showBottomSheet(BuildContext context) {
     showModalBottomSheet(
@@ -106,11 +110,44 @@ class GoogleMapScreenState extends State<GoogleMapScreen> {
         return Marker(
             markerId: MarkerId(cluster.getId()),
             position: cluster.location,
-            onTap: () {},
+            onTap: () async {
+              if (cluster.isMultiple) {
+                final zoomLevel = await _controller.future
+                    .then((value) => value.getZoomLevel());
+                _controller.future.then((value) => value.moveCamera(
+                    CameraUpdate.newCameraPosition(CameraPosition(
+                        target: cluster.location,
+                        zoom: _getNextLevel(zoomLevel, _levels)))));
+              } else {
+                MapsSheet.show(
+                  context: context,
+                  onMapTap: (map) {
+                    map.showDirections(
+                      destination: Coords(
+                        cluster.items.first.latitude,
+                        cluster.items.first.longitude,
+                      ),
+                    );
+                  },
+                );
+              }
+            },
             icon: await GoogleMapIcon(
                     imagePath: svgPath, isMultip: cluster.isMultiple)
                 .toBitmapDescriptor());
       };
+
+  double _getNextLevel(double value, List<double> levels) {
+    double result = 0.0;
+    final index = levels.indexOf(
+        levels.firstWhere((val) => val > value, orElse: () => levels.last));
+    if (index == levels.length - 1) {
+      result = levels[index];
+    } else {
+      result = levels[index];
+    }
+    return result;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -118,6 +155,7 @@ class GoogleMapScreenState extends State<GoogleMapScreen> {
     return Scaffold(
       body: Stack(children: [
         GoogleMap(
+            mapToolbarEnabled: false,
             zoomControlsEnabled: false,
             mapType: widget._mapType,
             initialCameraPosition: widget._userLocation,
