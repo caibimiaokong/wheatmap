@@ -124,8 +124,9 @@ class ListBuilder extends StatelessWidget {
                       ),
                     ),
                     onTap: () {
-                      context.go(
-                        '/webview/:${articles[pos].url}',
+                      context.pushNamed(
+                        'webview',
+                        pathParameters: {'url': articles[pos].url!},
                       );
                     }),
                 const Divider(

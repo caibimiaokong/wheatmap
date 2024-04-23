@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:map_launcher/map_launcher.dart' hide MapType;
 import 'package:wheatmap/feature/map_feature/components/googlemapicon.dart';
 import 'package:wheatmap/feature/map_feature/components/mapbottomsheet.dart';
 import 'package:wheatmap/feature/map_feature/components/mapcontroller.dart';
@@ -121,14 +120,11 @@ class GoogleMapScreenState extends State<GoogleMapScreen> {
               } else {
                 MapsSheet.show(
                   context: context,
-                  onMapTap: (map) {
-                    map.showDirections(
-                      destination: Coords(
-                        cluster.items.first.latitude,
-                        cluster.items.first.longitude,
-                      ),
-                    );
-                  },
+                  destination: LatLng(
+                    cluster.items.first.latitude,
+                    cluster.items.first.longitude,
+                  ),
+                  type: cluster.items.first.type,
                 );
               }
             },

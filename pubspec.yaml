@@ -87,4 +87,8 @@ flutter:
         - asset: lib/asset/fonts/Newsreader-Italic.ttf
         - asset: lib/asset/fonts/Newsreader-VariableFont.ttf
           style: italic
-
+    - family: CrimsonText
+      fonts:
+        - asset: lib/asset/fonts/CrimsonText-Italic.ttf
+        - asset: lib/asset/fonts/CrimsonText-Regular.ttf
+          style: italic

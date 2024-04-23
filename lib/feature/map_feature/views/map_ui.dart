@@ -58,7 +58,7 @@ class _MapViewState extends State<MapView> {
               userLocation: state.cameraPosition,
             );
           case MapStatus.error:
-            return const Center(child: Text('Failed to load map'));
+            return const GoogleMapScreen();
         }
       },
     ));
