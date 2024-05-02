@@ -37,6 +37,13 @@
             {
               "client_id": "247519758782-5kafkbmhsgd0s5m3ef8nr8bp27d5n1fc.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "247519758782-jrp7nsp2gnutbu7ulqkjkklu9pbjal0f.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.wheatmap"
+              }
             }
           ]
         }

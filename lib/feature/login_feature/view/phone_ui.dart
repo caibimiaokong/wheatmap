@@ -3,10 +3,11 @@ import 'package:flutter/material.dart';
 
 //pubdev library
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 import 'package:rive/rive.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
-import 'package:pinput/pinput.dart';
 import 'package:wheatmap/feature/login_feature/components/validator.dart';
+import 'package:wheatmap/feature/login_feature/controller/login_logic.dart';
 
 //local library
 
@@ -22,7 +23,6 @@ class _PhoneAuthScreenState extends State<PhoneAuthScreen> {
   // controller -> phone, email, name, otp code
   TextEditingController emailController = TextEditingController();
   TextEditingController nameController = TextEditingController();
-  TextEditingController otpCodeController = TextEditingController();
 
   String phoneNumber = "";
 
@@ -153,7 +153,11 @@ class _PhoneAuthScreenState extends State<PhoneAuthScreen> {
                   height: 30,
                 ),
                 ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    final sp = context.read<SignInProvider>();
+                    sp.signInWithPhone(context, phoneNumber,
+                        nameController.text, emailController.text);
+                  },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.blue,
                   ),

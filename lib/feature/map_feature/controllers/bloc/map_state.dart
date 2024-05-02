@@ -20,8 +20,8 @@ class MapState extends Equatable {
     this.status = MapStatus.initial,
     this.mapType = MapType.normal,
     this.cameraPosition = const CameraPosition(
-      target: LatLng(0, 0),
-      zoom: 0,
+      target: LatLng(33.740452, 33.740452),
+      zoom: 7,
     ),
     this.isWheatDisplayed = false,
     this.isRescueDisplayed = false,

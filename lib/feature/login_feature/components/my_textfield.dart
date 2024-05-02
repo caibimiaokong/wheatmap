@@ -24,6 +24,7 @@ class MyTextField extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextFormField(
       decoration: InputDecoration(
+        fillColor: Colors.white,
         hintText: hintText,
         filled: true,
         prefixIcon: Icon(preIcon),

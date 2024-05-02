@@ -34,11 +34,11 @@ class MapsSheet {
               ),
               Text(
                 "profession: $profession",
-                style: const TextStyle(fontSize: 20, fontFamily: 'CrimsonText'),
+                style: const TextStyle(fontSize: 20, fontFamily: 'Crimson'),
               ),
               Text(
                 "coordinate:  ${destination.latitude.toString().substring(0, 7)}, ${destination.longitude.toString().substring(0, 8)}",
-                style: const TextStyle(fontSize: 20, fontFamily: 'CrimsonText'),
+                style: const TextStyle(fontSize: 20, fontFamily: 'Crimson'),
               ),
               Expanded(
                 child: DefaultTabController(

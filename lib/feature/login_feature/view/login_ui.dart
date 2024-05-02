@@ -1,14 +1,18 @@
 //flutter library
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 //pubdev library
 import 'package:rounded_loading_button_plus/rounded_loading_button.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:provider/provider.dart';
 
 //locla library
 import 'package:wheatmap/feature/login_feature/components/validator.dart';
 import 'package:wheatmap/feature/login_feature/components/my_textfield.dart';
+import 'package:wheatmap/feature/login_feature/components/open_sanckbar.dart';
+import 'package:wheatmap/feature/login_feature/controller/login_logic.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -77,7 +81,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             style: TextStyle(
                                 fontSize: 15, color: Colors.grey[600]),
                           ),
-                          const SizedBox(height: 60),
+                          const SizedBox(height: 40),
                           Form(
                             key: _formKey,
                             child: Column(children: [
@@ -104,18 +108,25 @@ class _LoginScreenState extends State<LoginScreen> {
                               const SizedBox(height: 20),
 
                               // forgot password?
-                              Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 25.0),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.end,
-                                  children: [
-                                    Text(
-                                      'Forgot Password?',
-                                      style: TextStyle(color: Colors.grey[600]),
-                                    ),
-                                  ],
-                                ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  TextButton(
+                                    onPressed: () async {
+                                      await FirebaseAuth.instance
+                                          .sendPasswordResetEmail(
+                                              email: emailController.text)
+                                          .then((value) {
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(const SnackBar(
+                                                content: Text(
+                                                    'Password reset link has been sent to your email')));
+                                      });
+                                    },
+                                    child: const Text('Forgot password?',
+                                        style: TextStyle(color: Colors.grey)),
+                                  ),
+                                ],
                               ),
 
                               const SizedBox(height: 10),
@@ -133,6 +144,11 @@ class _LoginScreenState extends State<LoginScreen> {
                                     signInController.reset();
                                     return;
                                   } else {
+                                    final sp = context.read<SignInProvider>();
+                                    sp.signInWithEmailAndPassword(
+                                        emailController.text,
+                                        passwordController.text,
+                                        context);
                                     _formKey.currentState!.save();
                                   }
                                 },
@@ -178,8 +194,11 @@ class _LoginScreenState extends State<LoginScreen> {
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
                                 RoundedLoadingButton(
-                                    onPressed: () {},
+                                    onPressed: () {
+                                      handleGoogleSignIn();
+                                    },
                                     controller: googleController,
+                                    valueColor: Colors.blue,
                                     successColor: Colors.yellow,
                                     width: 80,
                                     height: 80,
@@ -197,7 +216,9 @@ class _LoginScreenState extends State<LoginScreen> {
 
                                 // twitter loading button
                                 RoundedLoadingButton(
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    handleTwitterAuth();
+                                  },
                                   controller: twitterController,
                                   successColor: Colors.lightBlue,
                                   width: 80,
@@ -235,5 +256,77 @@ class _LoginScreenState extends State<LoginScreen> {
                                 ),
                               ])
                         ])))));
+  }
+
+  Future handleGoogleSignIn() async {
+    final sp = context.read<SignInProvider>();
+
+    await sp.signInWithGoogle().then((value) {
+      if (sp.hasError == true) {
+        openSnackbar(context, sp.errorCode.toString(), Colors.red);
+        googleController.reset();
+      } else {
+        // checking whether user exists or not
+        sp.checkUserExists().then((value) async {
+          if (value == true) {
+            // user exists
+            await sp.getUserDataFromFirestore(sp.uid).then((value) => sp
+                .saveDataToSharedPreferences()
+                .then((value) => sp.setSignIn().then((value) {
+                      googleController.success();
+                      handleAfterSignIn();
+                    })));
+          } else {
+            // user does not exist
+            sp.saveDataToFirestore().then((value) => sp
+                .saveDataToSharedPreferences()
+                .then((value) => sp.setSignIn().then((value) {
+                      googleController.success();
+                      handleAfterSignIn();
+                    })));
+          }
+        });
+      }
+    });
+  }
+
+  // handling twitter auth
+  Future handleTwitterAuth() async {
+    final sp = context.read<SignInProvider>();
+
+    await sp.signInWithTwitter().then((value) {
+      if (sp.hasError == true) {
+        openSnackbar(context, sp.errorCode.toString(), Colors.red);
+        twitterController.reset();
+      } else {
+        // checking whether user exists or not
+        sp.checkUserExists().then((value) async {
+          if (value == true) {
+            // user exists
+            await sp.getUserDataFromFirestore(sp.uid).then((value) => sp
+                .saveDataToSharedPreferences()
+                .then((value) => sp.setSignIn().then((value) {
+                      twitterController.success();
+                      handleAfterSignIn();
+                    })));
+          } else {
+            // user does not exist
+            sp.saveDataToFirestore().then((value) => sp
+                .saveDataToSharedPreferences()
+                .then((value) => sp.setSignIn().then((value) {
+                      twitterController.success();
+                      handleAfterSignIn();
+                    })));
+          }
+        });
+      }
+    });
+  }
+
+  // handle after signin
+  handleAfterSignIn() {
+    Future.delayed(const Duration(milliseconds: 1000)).then((value) {
+      context.go('/home');
+    });
   }
 }
