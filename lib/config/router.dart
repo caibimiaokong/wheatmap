@@ -10,14 +10,14 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 //创建一个路由
 final GoRouter router = GoRouter(
-    redirect: (context, state) async {
-      final SharedPreferences prefs = await SharedPreferences.getInstance();
-      final bool? isSignIn = prefs.getBool('signed_in');
-      if (isSignIn == true) {
-        return '/home';
-      }
-      return '/';
-    },
+    // redirect: (context, state) async {
+    //   final SharedPreferences prefs = await SharedPreferences.getInstance();
+    //   final bool? isSignIn = prefs.getBool('signed_in');
+    //   if (isSignIn == true) {
+    //     return '/home';
+    //   }
+    //   return '/';
+    // },
     routes: [
       GoRoute(
           path: '/',

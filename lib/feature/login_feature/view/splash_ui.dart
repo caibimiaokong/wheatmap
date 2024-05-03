@@ -80,8 +80,8 @@ class ScreenSplashState extends State<SplashScreen> {
         ),
       ],
       onDone: () {
-        debugPrint("go to home");
-        context.go('/home');
+        debugPrint("go to login home page");
+        context.go('/login');
       },
       onSkip: () async {
         await introKey.currentState?.skipToEnd();

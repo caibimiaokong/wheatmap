@@ -41,66 +41,86 @@ class _ProfileUIState extends State<ProfileUI>
   Widget build(BuildContext context) {
     super.build(context);
     return Scaffold(
-        body: SingleChildScrollView(
-      child: Padding(
-        padding: const EdgeInsets.fromLTRB(40, 100, 40, 40),
-        child: Column(
-          children: [
-            ClipRRect(
-              borderRadius: BorderRadius.circular(300),
-              child: Image.asset('lib/asset/photo/polar_bear_transformed.png'),
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            Text(
-              name,
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
-            Text(
-              email,
-              style: Theme.of(context).textTheme.headlineSmall,
-            ),
-            const SizedBox(
-              height: 50,
-            ),
-            const Divider(),
-            const ProfileMenuWidget(
-              icon: Icons.settings,
-              title: 'Settings',
-            ),
-            ProfileMenuWidget(
-              icon: Icons.logout,
-              title: 'Logout',
-              onTap: () {
-                showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return AlertDialog(
-                        title: const Text('Logout'),
-                        content: const Text('Are you sure you want to logout?'),
-                        actions: [
-                          TextButton(
-                              onPressed: () {
-                                Navigator.pop(context);
-                              },
-                              child: const Text('Cancel')),
-                          TextButton(
-                              onPressed: () async {
-                                final sp = context.read<SignInProvider>();
-                                sp.userSignOut();
-                                context.go('/login');
-                              },
-                              child: const Text('Logout'))
-                        ],
-                      );
-                    });
-              },
-            ),
-          ],
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(40, 100, 40, 40),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Container(
+                width: 150,
+                height: 150,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(300),
+                  color: Colors.blueAccent.withOpacity(0.1),
+                  image: const DecorationImage(
+                    fit: BoxFit.cover,
+                    image: AssetImage(
+                        'lib/asset/photo/polar_bear_transformed.png'),
+                  ),
+                ),
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              Text(
+                name,
+                style: const TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                    fontFamily: 'Caveat',
+                    color: Colors.black),
+              ),
+              Text(
+                email,
+                style: const TextStyle(
+                    fontSize: 15,
+                    fontWeight: FontWeight.bold,
+                    fontFamily: 'Caveat',
+                    color: Colors.black),
+              ),
+              const SizedBox(
+                height: 50,
+              ),
+              const Divider(),
+              const ProfileMenuWidget(
+                icon: Icons.settings,
+                title: 'Settings',
+              ),
+              ProfileMenuWidget(
+                icon: Icons.logout,
+                title: 'Logout',
+                onTap: () {
+                  showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                          title: const Text('Logout'),
+                          content:
+                              const Text('Are you sure you want to logout?'),
+                          actions: [
+                            TextButton(
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                                child: const Text('Cancel')),
+                            TextButton(
+                                onPressed: () async {
+                                  final sp = context.read<SignInProvider>();
+                                  sp.userSignOut();
+                                  context.go('/login');
+                                },
+                                child: const Text('Logout'))
+                          ],
+                        );
+                      });
+                },
+              ),
+            ],
+          ),
         ),
       ),
-    ));
+    );
   }
 
   @override
