@@ -16,7 +16,10 @@ class SplashScreen extends StatefulWidget {
   ScreenSplashState createState() => ScreenSplashState();
 }
 
-class ScreenSplashState extends State<SplashScreen> {
+class ScreenSplashState extends State<SplashScreen>
+    with AutomaticKeepAliveClientMixin {
+  @override
+  bool get wantKeepAlive => true;
   final introKey = GlobalKey<IntroductionScreenState>();
 
   Widget _buildLottie(String assetName, [double width = 350]) {
@@ -25,6 +28,7 @@ class ScreenSplashState extends State<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     const bodyStyle = TextStyle(fontSize: 19.0, fontFamily: 'Playfair');
 
     const pageDecoration = PageDecoration(
@@ -80,7 +84,7 @@ class ScreenSplashState extends State<SplashScreen> {
         ),
       ],
       onDone: () {
-        debugPrint("go to login home page");
+        debugPrint("go to login  page");
         context.go('/login');
       },
       onSkip: () async {

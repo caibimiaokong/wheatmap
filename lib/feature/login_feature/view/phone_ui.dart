@@ -18,7 +18,10 @@ class PhoneAuthScreen extends StatefulWidget {
   State<PhoneAuthScreen> createState() => _PhoneAuthScreenState();
 }
 
-class _PhoneAuthScreenState extends State<PhoneAuthScreen> {
+class _PhoneAuthScreenState extends State<PhoneAuthScreen>
+    with AutomaticKeepAliveClientMixin {
+  @override
+  bool get wantKeepAlive => true;
   final formKey = GlobalKey<FormState>();
   // controller -> phone, email, name, otp code
   TextEditingController emailController = TextEditingController();
@@ -28,6 +31,7 @@ class _PhoneAuthScreenState extends State<PhoneAuthScreen> {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return Scaffold(
       backgroundColor: const Color(0xffD6E2EA),
       appBar: AppBar(
@@ -57,7 +61,8 @@ class _PhoneAuthScreenState extends State<PhoneAuthScreen> {
                   width: 200,
                   height: 200,
                   child: ClipOval(
-                    child: RiveAnimation.asset('lib/asset/photo/bear.riv'),
+                    child: RiveAnimation.asset('lib/asset/photo/bear.riv',
+                        controllers: []),
                   ),
                 ),
                 const SizedBox(

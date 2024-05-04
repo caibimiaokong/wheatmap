@@ -45,7 +45,7 @@ class _ProfileUIState extends State<ProfileUI>
         child: Padding(
           padding: const EdgeInsets.fromLTRB(40, 100, 40, 40),
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Container(
                 width: 150,
@@ -108,7 +108,7 @@ class _ProfileUIState extends State<ProfileUI>
                                 onPressed: () async {
                                   final sp = context.read<SignInProvider>();
                                   sp.userSignOut();
-                                  context.go('/login');
+                                  context.go('/splash');
                                 },
                                 child: const Text('Logout'))
                           ],

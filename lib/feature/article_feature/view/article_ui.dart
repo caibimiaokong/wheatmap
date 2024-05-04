@@ -60,13 +60,10 @@ class _ArticleUIState extends State<ArticleUI>
                 bottom: PreferredSize(
                   preferredSize: const Size.fromHeight(20),
                   child: Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 0),
-                    margin: const EdgeInsets.symmetric(
-                      horizontal: 0,
-                    ),
                     alignment: Alignment.centerLeft,
                     color: const Color(0xFFB4EBFD),
                     child: TabBar(
+                      tabAlignment: TabAlignment.start,
                       labelPadding: const EdgeInsets.symmetric(horizontal: 10),
                       controller: _tabController,
                       isScrollable: true,

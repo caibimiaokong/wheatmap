@@ -73,4 +73,21 @@ class MapRepository {
     final position = await Geolocator.getCurrentPosition();
     return LatLng(position.latitude, position.longitude);
   }
+
+  Future<LatLng> getNearbyPoint() async {
+    final location = await getMyLocation();
+    final res = await _supabaseClient.rpc(
+      'nearest_point',
+      params: <String, dynamic>{
+        'lat': location.latitude,
+        'long': location.longitude,
+      },
+    );
+    if (res == null) {
+      throw PlatformException(code: 'getVideosFromLocation error null data');
+    } else {
+      final DisplayPoint point = DisplayPoint.pointFromData(data: res).first;
+      return LatLng(point.latitude, point.longitude);
+    }
+  }
 }

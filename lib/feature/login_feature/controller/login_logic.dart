@@ -52,10 +52,12 @@ class SignInProvider extends ChangeNotifier {
   }
 
   //get user sign in data from shared preferences
-  Future checkSignInUser() async {
+  Future<bool> checkSignInUser() async {
     final SharedPreferences s = await SharedPreferences.getInstance();
     _isSignedIn = s.getBool("signed_in") ?? false;
+    debugPrint("SIGN IN STATUS: $_isSignedIn");
     notifyListeners();
+    return _isSignedIn;
   }
 
   //set user sign in data to shared preferences
