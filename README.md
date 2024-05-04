@@ -1,16 +1,4 @@
-# wheatmap
+# wheatMap
+wheatMap application is a part of  "Wheat maturity monitoring" project. The project aims to help farmers cope with possible climate disasters while the wheat is ripening.
 
-A new Flutter project.
-
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+wheatMap application's data come from [GEE](https://earthengine.google.com/)--- A remote sensing cloud processing platform.But for now, Data used by the project is produced by Python for test and evade censorship.
